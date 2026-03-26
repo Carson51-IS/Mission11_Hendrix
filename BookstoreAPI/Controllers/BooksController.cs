@@ -22,16 +22,26 @@ public class BooksController : ControllerBase
     /// <param name="pageNumber">1-based page number</param>
     /// <param name="pageSize">Number of results per page (default 5)</param>
     /// <param name="sortBy">Sort order: "title" for ascending, "title_desc" for descending</param>
+    /// <param name="category">Optional category name; omit or "All" for every category</param>
     [HttpGet]
     public async Task<ActionResult<BooksResponse>> GetBooks(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 5,
-        [FromQuery] string sortBy = "title")
+        [FromQuery] string sortBy = "title",
+        [FromQuery] string? category = null)
     {
         if (pageNumber < 1) pageNumber = 1;
         if (pageSize < 1) pageSize = 5;
 
         var query = _context.Books.AsQueryable();
+
+        // Filter by category when provided (not "All")
+        if (!string.IsNullOrWhiteSpace(category) &&
+            !string.Equals(category.Trim(), "All", StringComparison.OrdinalIgnoreCase))
+        {
+            var cat = category.Trim();
+            query = query.Where(b => b.Category == cat);
+        }
 
         // Apply sorting by book title
         query = sortBy.ToLower() switch
@@ -56,6 +66,21 @@ public class BooksController : ControllerBase
             PageSize = pageSize,
             TotalPages = totalPages
         });
+    }
+
+    /// <summary>
+    /// Gets distinct book categories for filtering UI.
+    /// </summary>
+    [HttpGet("categories")]
+    public async Task<ActionResult<List<string>>> GetCategories()
+    {
+        var categories = await _context.Books
+            .Select(b => b.Category)
+            .Distinct()
+            .OrderBy(c => c)
+            .ToListAsync();
+
+        return Ok(categories);
     }
 }
 
