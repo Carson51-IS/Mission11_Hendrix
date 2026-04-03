@@ -5,7 +5,8 @@ import type { Book, BooksResponse } from '../types/Book';
 import { useCart } from '../context/useCart';
 
 const API_BASE =
-  import.meta.env.VITE_API_URL || 'http://localhost:5094/api/books';
+  import.meta.env.VITE_API_URL ||
+  'https://mission13hendrix-f2cpdmgtava8e2as.mexicocentral-01.azurewebsites.net/api/books';
 
 /**
  * Book list with category filter, pagination synced to URL, sorting, and cart actions.

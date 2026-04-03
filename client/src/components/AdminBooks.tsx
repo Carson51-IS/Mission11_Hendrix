@@ -3,7 +3,8 @@ import axios from 'axios';
 import type { Book } from '../types/Book';
 
 const API_BASE =
-  import.meta.env.VITE_API_URL || 'http://localhost:5094/api/books';
+  import.meta.env.VITE_API_URL ||
+  'https://mission13hendrix-f2cpdmgtava8e2as.mexicocentral-01.azurewebsites.net/api/books';
 
 const emptyBook: Omit<Book, 'bookID'> = {
   title: '',
