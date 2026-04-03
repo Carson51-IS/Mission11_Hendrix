@@ -33,6 +33,11 @@ export default function Layout() {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/adminbooks">
+                  Admin
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link position-relative" to="/cart">
                   Cart
                   {totalQuantity > 0 && (

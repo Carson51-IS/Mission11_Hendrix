@@ -4,7 +4,8 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import type { Book, BooksResponse } from '../types/Book';
 import { useCart } from '../context/useCart';
 
-const API_BASE = 'http://localhost:5094/api/books';
+const API_BASE =
+  import.meta.env.VITE_API_URL || 'http://localhost:5094/api/books';
 
 /**
  * Book list with category filter, pagination synced to URL, sorting, and cart actions.
@@ -43,9 +44,7 @@ export default function BookList() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const res = await axios.get<string[]>(
-          'http://localhost:5094/api/books/categories'
-        );
+        const res = await axios.get<string[]>(`${API_BASE}/categories`);
         setCategories(res.data);
       } catch {
         setCategories([]);
